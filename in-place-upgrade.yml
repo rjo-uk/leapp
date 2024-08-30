@@ -1,0 +1,11 @@
+---
+- name: Perform RHEL In-Place Upgrade
+  hosts: "{{ upgrade_group | default(omit) }}"
+  strategy: free
+  become: true
+  force_handlers: true
+  tasks:
+  - name: Perform OS upgrade using leapp.upgrade
+    ansible.builtin.import_role:
+       name: infra.leapp.upgrade
+...
