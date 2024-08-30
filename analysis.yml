@@ -1,0 +1,31 @@
+---
+- name: Analysis
+  hosts: "{{ upgrade_group | default(omit) }}"
+  strategy: free
+  gather_facts: true
+  become: true
+  force_handlers: true
+  pre_tasks:
+    - name: Register output of 'yum repolist'
+      ansible.builtin.shell: |
+        set -o pipefail
+        yum repolist
+      args:
+        executable: /bin/bash
+      register: yum_repolist
+      changed_when: yum_repolist.rc != 0
+
+  roles:
+    - infra.leapp.analysis
+  tasks:
+    - name: Confirm check_vdo True in leapp answerfile
+      ansible.builtin.replace:
+        path: /var/log/leapp/answerfile
+        regexp: '(\[check_vdo\][^<]*)\#\ confirm\ \='
+        replace: '\1confirm\ \=\ True'
+
+    - name: Get report file status
+      ansible.builtin.stat:
+        path: /var/log/leapp/leapp-report.json
+      register: report_file
+...
