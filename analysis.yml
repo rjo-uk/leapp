@@ -5,6 +5,8 @@
   gather_facts: true
   become: true
   force_handlers: true
+  vars:
+    - "leapp_answerfile": "[check_vdo]\nconfirm = True\n"
   pre_tasks:
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |
@@ -23,6 +25,7 @@
         path: /var/log/leapp/answerfile
         regexp: '(\[check_vdo\][^<]*)\#\ confirm\ \='
         replace: '\1confirm\ \=\ True'
+        backup: true
 
     - name: Get report file status
       ansible.builtin.stat:
