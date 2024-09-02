@@ -12,10 +12,10 @@
       ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
       vars:
         params:
-        files:
-        - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
-      paths:
-        - vars
+          files:
+          - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
+        paths:
+          - vars
 
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |
