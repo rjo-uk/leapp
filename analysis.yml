@@ -13,9 +13,9 @@
       vars:
         params:
           files:
-          - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
-        paths:
-          - vars
+            - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
+          paths:
+            - 'vars'
 
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |
