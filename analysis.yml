@@ -5,9 +5,18 @@
   gather_facts: true
   become: true
   force_handlers: true
-  vars:
-    - "leapp_answerfile": "[check_vdo]\nconfirm = True\n"
+  # vars:
+  #  - "leapp_answerfile": "[check_vdo]\nconfirm = True\n"
   pre_tasks:
+    - name: Include vars depending on current OS
+      ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+      vars:
+        params:
+        files:
+        - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
+      paths:
+        - vars
+
     - name: Register output of 'yum repolist'
       ansible.builtin.shell: |
         set -o pipefail
@@ -26,6 +35,7 @@
         regexp: '(\[check_vdo\][^<]*)\#\ confirm\ \='
         replace: '\1confirm\ \=\ True'
         backup: true
+      when: ansible_distribution_major_version == '8'
 
     - name: Get report file status
       ansible.builtin.stat:
