@@ -1,0 +1,13 @@
+---
+- name: Apply bigboot role
+  hosts: "{{ upgrade_group | default(omit) }}"
+  strategy: free
+  become: true
+  force_handlers: true
+  vars:
+    bigboot_partition_size: "{{ partition_size | default(omit) }}"
+  tasks:
+  - name: Apply boot changes using infra.lvm_snapshots role
+    ansible.builtin.import_role:
+       name: infra.lvm_snapshots.bigboot
+...
