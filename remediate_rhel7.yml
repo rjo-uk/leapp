@@ -6,6 +6,13 @@
     delay: 5
     timeout: 300
 
+- name: Ensure latest subscription-manager and redhat-release packages installed
+  ansible.builtin.yum:
+    name:
+      - subscription-manager
+      - redhat-release
+    state: latest
+
 - name: Define kernel modules to unload
   ansible.builtin.set_fact:
     kernel_modules_to_unload:
