@@ -29,7 +29,7 @@
     line: "{{ item.key }} {{ item.value }}"
     state: present
   loop:
-    - {key: "PermitRootLogin", value: "yes #rjo-override}
+    - {key: "PermitRootLogin", value: "yes #rjo-override"}
   notify:
     - Restart sshd
 ...
