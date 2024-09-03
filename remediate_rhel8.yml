@@ -28,7 +28,7 @@
 - name: Increase root file descriptors to allow leapp to run
   ansible.builtin.lineinfile:
     path: "/root/.bashrc"
-    line: "ulimit -u 16384"
+    line: "ulimit -n 16384"
     state: present
 
 - name: Configure sshd
