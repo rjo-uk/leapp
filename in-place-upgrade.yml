@@ -5,10 +5,10 @@
   become: true
   force_handlers: true
   tasks:
-  - name: Disable rhel-7-server-rpms if skipping latest 7.9 release
+  - name: Disable all repos if skipping latest 7.9 release
     ansible.builtin.shell: |
       set -o pipefail
-      subscription-manager repos --disable rhel-7-server-rpms
+      subscription-manager repos --disable *
     args:
       executable: /bin/bash
     when:
