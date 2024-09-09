@@ -8,7 +8,7 @@
   - name: Disable all repos if skipping latest 7.9 release
     ansible.builtin.shell: |
       set -o pipefail
-      subscription-manager repos --disable *
+      subscription-manager repos --disable \*
       subscription-manager repos --enable rhel-7-server-extras-rpms
     args:
       executable: /bin/bash
