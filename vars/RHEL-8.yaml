@@ -1,0 +1,5 @@
+---
+leapp_answerfile: |
+  [check_vdo]
+  confirm = True
+...

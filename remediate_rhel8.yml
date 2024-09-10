@@ -1,0 +1,44 @@
+---
+- name: Wait for connection
+  ansible.builtin.wait_for_connection:
+    connect_timeout: 20
+    sleep: 5
+    delay: 5
+    timeout: 300
+
+- name: Check for leapp utility
+  ansible.builtin.stat:
+    path: /usr/bin/leapp
+  register: leapp_utility_check
+
+- name: Configure firewalld
+  ansible.builtin.lineinfile:
+    path: "/etc/firewalld/firewalld.conf"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - {key: "AllowZoneDrifting", value: "no"}
+  notify:
+    - Restart firewalld
+
+# https://access.redhat.com/discussions/7084336
+# https://github.com/redhat-cop/infra.leapp/issues/218
+# Remove when new version of leapp collection is published
+- name: Increase root file descriptors to allow leapp to run
+  ansible.builtin.lineinfile:
+    path: "/root/.bashrc"
+    line: "ulimit -n 16384"
+    state: present
+
+- name: Configure sshd
+  ansible.builtin.lineinfile:
+    path: "/etc/ssh/sshd_config"
+    regex: "^(#)?{{ item.key }}"
+    line: "{{ item.key }} {{ item.value }}"
+    state: present
+  loop:
+    - {key: "PermitRootLogin", value: "yes #rjo-override"}
+  notify:
+    - Restart sshd
+...

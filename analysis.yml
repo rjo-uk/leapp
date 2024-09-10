@@ -1,0 +1,44 @@
+---
+- name: Analysis
+  hosts: "{{ upgrade_group | default(omit) }}"
+  strategy: free
+  gather_facts: true
+  become: true
+  force_handlers: true
+  # vars:
+  #  - "leapp_answerfile": "[check_vdo]\nconfirm = True\n"
+  pre_tasks:
+    - name: Include vars depending on current OS
+      ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+      vars:
+        params:
+          files:
+            - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
+          paths:
+            - 'vars'
+
+    - name: Register output of 'yum repolist'
+      ansible.builtin.shell: |
+        set -o pipefail
+        yum repolist
+      args:
+        executable: /bin/bash
+      register: yum_repolist
+      changed_when: yum_repolist.rc != 0
+
+  roles:
+    - infra.leapp.analysis
+  tasks:
+    - name: Confirm check_vdo True in leapp answerfile
+      ansible.builtin.replace:
+        path: /var/log/leapp/answerfile
+        regexp: '(\[check_vdo\][^<]*)\#\ confirm\ \='
+        replace: '\1confirm\ \=\ True'
+        backup: true
+      when: ansible_distribution_major_version == '8'
+
+    - name: Get report file status
+      ansible.builtin.stat:
+        path: /var/log/leapp/leapp-report.json
+      register: report_file
+...
