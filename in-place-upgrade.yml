@@ -17,7 +17,13 @@
       - skip_latest_rhel7 == 'yes'
       - ansible_distribution_major_version|int == 7
 
+  - name: If already at target major release exit this playbook
+    ansible.builtin.meta: end_play
+    when:
+      - ipu_target is defined
+      - ansible_distribution_major_version|int == ipu_target|int
+
   - name: Perform OS upgrade using leapp.upgrade
     ansible.builtin.import_role:
-       name: infra.leapp.upgrade
+      name: infra.leapp.upgrade
 ...
