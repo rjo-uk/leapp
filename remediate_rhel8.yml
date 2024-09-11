@@ -22,15 +22,6 @@
   notify:
     - Restart firewalld
 
-# https://access.redhat.com/discussions/7084336
-# https://github.com/redhat-cop/infra.leapp/issues/218
-# Remove when new version of leapp collection is published
-- name: Increase root file descriptors to allow leapp to run
-  ansible.builtin.lineinfile:
-    path: "/root/.bashrc"
-    line: "ulimit -n 16384"
-    state: present
-
 - name: Configure sshd
   ansible.builtin.lineinfile:
     path: "/etc/ssh/sshd_config"
