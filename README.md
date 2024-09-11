@@ -3,7 +3,7 @@ Ansible playbooks for performing RHEL In-Place Upgrades (IPU)
 
 ## Requirements
 
-A number of collections from Ansible Galaxy are required to run the playbooks.  These can be found in [collections/requirements.yml](collections/requirements.yml).  This file will be processed by AWX or Ansible Automation Platform when using this repository as a project source which should automatically install the collections when required.
+A number of collections from Ansible Galaxy or Ansible Automation Hub are required to run the playbooks.  The [collections/requirements.yml](collections/requirements.yml) lists the requirements if using Ansible Galaxy. This file will be processed by AWX or Ansible Automation Platform when using this repository as a project source which should automatically install the collections when required.
 
 For local testing, the collections can be installed as follows:
 
@@ -45,7 +45,27 @@ Ensures that the /boot partition is configured for an appropriate size using the
 
 ## References and Links
 
-- https://github.com/redhat-partner-tech/leapp-project
+### Documentation
+
 - https://leapp.readthedocs.io/en/latest/
-- https://github.com/redhat-cop/infra.leapp
+
+### Ansible Galaxy Collections and Roles
+- https://galaxy.ansible.com/ui/repo/published/infra/leapp/
+- https://galaxy.ansible.com/ui/repo/published/infra/lvm_snapshots/
 - https://galaxy.ansible.com/ui/repo/published/infra/lvm_snapshots/content/role/bigboot/
+
+
+### Ansible Automation Platform Collections
+
+- https://console.redhat.com/ansible/automation-hub/repo/validated/infra/leapp/
+- https://console.redhat.com/ansible/automation-hub/repo/validated/infra/lvm_snapshots/
+
+
+### Role Sources
+
+- https://github.com/redhat-cop/infra.leapp/
+- https://github.com/redhat-cop/infra.lvm_snapshots/
+
+### Examples
+
+- https://github.com/redhat-partner-tech/leapp-project/
