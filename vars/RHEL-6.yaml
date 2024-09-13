@@ -1,3 +1,4 @@
 ---
+update_grub_to_grub_2: true
 rhel_7_network_install_repo_url: http://satellite.london.example.com/pulp/content/Example_Organization/Library/content/dist/rhel/server/7/7.9/x86_64/kickstart/
 ...
