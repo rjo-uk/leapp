@@ -1,5 +1,5 @@
 ---
-- name: Apply bigboot role
+- name: Apply bigboot role when requested
   hosts: "{{ upgrade_group | default(omit) }}"
   strategy: free
   become: true
@@ -7,7 +7,16 @@
   vars:
     bigboot_partition_size: "{{ partition_size | default(omit) }}"
   tasks:
-  - name: Apply boot changes using infra.lvm_snapshots role
-    ansible.builtin.import_role:
-       name: infra.lvm_snapshots.bigboot
+    - name: Show setting of use_bigboot to determine if we should apply role
+      ansible.builtin.debug:
+        msg:
+          - "use_bigboot is {{ use_bigboot | default('not defined') }}"
+    - name: If use_bigboot is false then exit this playbook
+      ansible.builtin.meta: end_play
+      when:
+        - use_bigboot is defined
+        - use_bigboot|string == 'no'
+    - name: Apply boot changes using infra.lvm_snapshots role
+      ansible.builtin.import_role:
+         name: infra.lvm_snapshots.bigboot
 ...
