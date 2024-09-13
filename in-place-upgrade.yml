@@ -17,6 +17,15 @@
         - ipu_target is defined
         - ansible_distribution_major_version | int == ipu_target | int
 
+    - name: Include vars depending on current OS
+      ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+      vars:
+        params:
+          files:
+            - 'RHEL-{{ ansible_distribution_major_version }}.yaml'
+          paths:
+            - 'vars'
+
     - name: Disable all repos if skipping latest 6.10 release
       ansible.builtin.shell: |
         set -o pipefail
