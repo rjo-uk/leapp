@@ -11,7 +11,12 @@
     path: /usr/bin/leapp
   register: leapp_utility_check
 
-- name: Configure firewalld
+- name: Check status of /etc/firewalld/firewalld.conf
+  ansible.builtin.stat:
+    path: /etc/firewalld/firewalld.conf
+  register: firewalld_conf_file
+
+- name: Configure AllowZoneDrifting to no if firewalld config file exists
   ansible.builtin.lineinfile:
     path: "/etc/firewalld/firewalld.conf"
     regex: "^(#)?{{ item.key }}"
@@ -21,6 +26,8 @@
     - {key: "AllowZoneDrifting", value: "no"}
   notify:
     - Restart firewalld
+  when:
+    - firewalld_conf_file.stat.isreg is defined
 
 - name: Configure sshd
   ansible.builtin.lineinfile:
