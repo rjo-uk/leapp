@@ -48,6 +48,13 @@ Ensures that the /boot partition is configured for an appropriate size using the
 
 The [RHEL 6.10 QCOW image](https://access.redhat.com/downloads/content/69/ver=/rhel---6/6.10/x86_64/product-software) does not ship with a `/boot` partition so if we run the bigboot role on this type of server, it will fail.  Lack of `/boot` is not recommended, but it is valid.  As such we can set `use_bigboot` to `false` to let the `bigboot.yml` playbook acknowledge the fact that it's not meant to make any changes on such a server.
 
+### RHEL 6 to RHEL 9 Upgrade
+
+Using the playbooks in this repository it is possible to chain multiple upgrades together using tools such as AWX or Ansible Automation Platform.  The following shows a RHEL 6 to RHEL 9 workflow:
+
+![Ansible Automation Platform RHEL 6 to RHEL 9 workflow](rhel6_to_rhel9_workflow.png)
+
+
 ## References and Links
 
 ### Documentation
