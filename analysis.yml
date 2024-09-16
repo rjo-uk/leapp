@@ -8,6 +8,18 @@
   # vars:
   #  - "leapp_answerfile": "[check_vdo]\nconfirm = True\n"
   pre_tasks:
+    - name: Show current and target RHEL releases
+      ansible.builtin.debug:
+        msg:
+          - "Current version of RHEL is {{ ansible_distribution_major_version }}"
+          - "Target version of RHEL is {{ ipu_target | default('Not defined') }}"
+
+    - name: If already at target major release exit this playbook
+      ansible.builtin.meta: end_play
+      when:
+        - ipu_target is defined
+        - ansible_distribution_major_version | int == ipu_target | int
+
     - name: Include vars depending on current OS
       ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
       vars:
